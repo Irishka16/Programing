@@ -112,7 +112,7 @@ def extreme_by_areas(df): # знаходимо роки та регіони де
 class StockExample(server.App):
     title = 'NOAA data vizualization'
 
-    inputs = [
+    inputs = [ 
         {
             "type": 'dropdown',
             "label": 'Param1',
@@ -232,8 +232,8 @@ class StockExample(server.App):
         start_week = params['start_week']
         end_week = params['end_week']
 
-        df = load_data_to_df("./data",NOAAIndex)
-        df = vhi_by_province(df,province)
+        df = load_data_to_df("./lab2-3/data",NOAAIndex)    #загружаємо
+        df = vhi_by_province(df,province)           #
         df = df[(df['year'] >= int(start_year)) & (df['year'] <= int(end_year)) & (df['week'] >= int(start_week)) &
             (df['week'] <= int(end_week))]
 
@@ -254,16 +254,17 @@ class StockExample(server.App):
         plt.figure(figsize=(16, 6))
         img = sns.lineplot(data=df, x='year:week', y=f'{params["param1"]}',
                            label=f'{params["param1"]+str(NOAAIndex[int(params["province"])])}',
-                           marker="o", markersize=3)
+                           marker="*", markersize=10,markerfacecolor="r")
 
         if str(params["param2"]) != "0":
             sns.lineplot(data=df, x='year:week', y=f'{params["param2"]}',
-                         label=f'{params["param2"]+str(NOAAIndex[int(params["province"])])}', marker="o", markersize=3, ax=img)
+                         label=f'{params["param2"]+str(NOAAIndex[int(params["province"])])}', marker="*", markersize=10, ax=img,markerfacecolor="r")
         plt.xlabel('Year:Week')  
         plt.ylabel('Value') 
         plt.xticks(range(0, len(df), int(params['step'])))
         plt.xticks(rotation=70)
         plt.legend()
+        plt.grid()
         return img
 
 app = StockExample()
