@@ -4,7 +4,7 @@ import requests
 import glob
 import os
 from datetime import datetime
-
+echo 0
 from spyre import server
 import matplotlib.pyplot as plt
 import seaborn as sns
