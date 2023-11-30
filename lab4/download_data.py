@@ -13,11 +13,11 @@ def download_dataset():
     if response.status_code != 200:
         raise ValueError
 
-    with open("./Programming/lab4/data/household_power_consumption.zip", 'wb') as file:
+    with open("./lab4/data/household_power_consumption.zip", 'wb') as file:
         for chunk in response:
             file.write(chunk)
 
-    with ZipFile("./Programming/lab4/data/household_power_consumption.zip") as zipFile:
+    with ZipFile("./lab4/data/household_power_consumption.zip") as zipFile:
         zipFile.extractall("data")
 
 if __name__ == "__main__":
