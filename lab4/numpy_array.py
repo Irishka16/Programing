@@ -5,6 +5,16 @@ from numpy.lib import recfunctions as rfn
 # import download_data
 # download_data.download_dataset()
 
+def timing_decorator(func):
+    def wrapper(*args, **kwargs):
+        start_time = datetime.now()
+        result = func(*args, **kwargs)
+        end_time = datetime.now()
+        execution_time = end_time - start_time
+        print(f"{func.__name__} took {execution_time} seconds to execute.")
+        return result
+    return wrapper
+
 # Задаємо стовбці та типи даних
 info = {
     'names':('Active','Reactive','Voltage','Intensity','met1', 'met2', 'met3'),
@@ -36,38 +46,39 @@ for column in power.dtype.names:
     nan_mask = nan_mask | np.isnan(power[column])
 
 power = power[~nan_mask]
-start = datetime.now()
+   
 # Task 1
+@timing_decorator
 def select_power_cons_more_five(power):
     print("Active > 5")
     print(power[power['Active'] > 5])
     return 0
 
-select_power_cons_more_five(power)
 # Task 2
+@timing_decorator
 def select_volt_more_235(power):
     print("Voltage > 235")
     print(power[power['Voltage'] > 235])
     return 0
-select_volt_more_235(power)
 
 # Task 3
+@timing_decorator
 def met2_more_met3_int_19_20(power):
     print("Intensite >= 19 <= 20, met2 > met3")
     print(power[np.logical_and.reduce([ power['Intensity'] >= 19, power['Intensity'] <= 20, power['met2'] > power['met3'] ])])
     return 0
-met2_more_met3_int_19_20(power)
 
 # Task 4
+@timing_decorator
 def mean_of_50000(power):
     print("Random 50000, mean in met")
     subset = power[np.random.choice(np.arange(0,len(power)), 500000, replace=False)]
     for i in ['met1','met2','met3']:
         mean = subset[i].mean()
         print(f"Mean is {mean} of {i}")
-mean_of_50000(power)
 
 # Task 5
+@timing_decorator
 def night_cons_more_6kw(power):
     print("Task 5")
     
@@ -93,6 +104,9 @@ def night_cons_more_6kw(power):
     print(met1_first[::3].shape)
     print(met1_second[::4])
 
+select_power_cons_more_five(power)
+select_volt_more_235(power)
+met2_more_met3_int_19_20(power)
+mean_of_50000(power)
+
 night_cons_more_6kw(power)
-end = datetime.now() - start
-print(end)

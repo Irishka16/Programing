@@ -3,7 +3,7 @@ import requests
 from zipfile import ZipFile
 from datetime import datetime
 
-
+#допоміжна функцію для завантаження датасету
 def download_dataset():
     if not os.path.exists("data"):
         os.makedirs("data")    
@@ -18,7 +18,7 @@ def download_dataset():
             file.write(chunk)
 
     with ZipFile("./lab4/data/household_power_consumption.zip") as zipFile:
-        zipFile.extractall("data")
+        zipFile.extractall("./lab4/data")
 
 if __name__ == "__main__":
     download_dataset()

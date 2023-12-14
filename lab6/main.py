@@ -8,6 +8,7 @@ true_intercept = 5  # зсув по y (b)
 # Генеруємо випадкові дані навколо прямої y = kx + b
 num_points = 1000
 x_data = np.random.rand(num_points) * 10  # генеруємо випадкові значення x
+print(len(x_data))
 noise = np.random.randn(num_points) * 2  # генеруємо випадковий шум
 y_data = true_slope * x_data + true_intercept + noise
 
@@ -23,12 +24,12 @@ def least_squares_fit(x_values, y_values): #описуємо функцію на
     b_estimate = y_mean - k_estimate * x_mean
 
     return k_estimate, b_estimate
-#Виводимо наші параметри ???
+#Виводимо наші параметри 
 optimal_slope, optimal_intercept = least_squares_fit(x_data, y_data)
 print("Optimal estimate for the slope (k): {}".format(optimal_slope))
 print("Optimal estimate for the y-intercept (b): {}".format(optimal_intercept))
 
-def compare_estimates(x, y, true_slope, true_intercept):   #Описуємо функцію порівнянні методу мен. кв. та polyfit
+def compare_estimates(x, y, true_slope, true_intercept):   #Описуємо функцію порівняння методу мен. кв. та polyfit
     # Least squares method
     optimal_slope, optimal_intercept = least_squares_fit(x, y)
 
@@ -95,10 +96,11 @@ compare_estimates(x_data, y_data, true_slope, true_intercept)
 #Задаємо потенціальні параметри швид. навч. та ітерації та отриуємо оптимальні значенні lr, iter, завдяки функції find_op_par
 learning_rates_to_try = [0.01, 0.1, 0.5]
 n_iters_to_try = [100, 500, 1000]
+# optimal_lr, optimal_n_iter = find_optimal_parameters(x_data, y_data, learning_rates_to_try, n_iters_to_try)
+# print(optimal_lr, optimal_n_iter)
 
-optimal_lr, optimal_n_iter = find_optimal_parameters(x_data, y_data, learning_rates_to_try, n_iters_to_try)
 # Знаходимо оптимальні параметри (k,b) за функцією градієнтного спуску
-optimal_slope_grad, optimal_intercept_grad, _ = gradient_descent(x_data, y_data, optimal_lr, optimal_n_iter)
+optimal_slope_grad, optimal_intercept_grad, _ = gradient_descent(x_data, y_data, 0.001, 1000000)
 # Виводимо дані та будуємо лін. регресії
 plt.scatter(x_data, y_data, label='Data')
 plt.plot(x_data, optimal_slope * x_data + optimal_intercept, color='red', linewidth=3, label='Least Squares Fit')

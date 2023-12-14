@@ -13,6 +13,7 @@ dataspyre
 seaborn
 datetime
 zipfile
-datetime
 gdal
 sentinelhub
+matplotlib
+scipy

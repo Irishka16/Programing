@@ -2,49 +2,64 @@ import numpy as np
 import pandas as pd
 from datetime import datetime
 
-#import download_data
-#download_data.download_dataset()
 
-power = pd.read_csv("./lab4/data/household_power_consumption.txt", delimiter=';') # читаємо датафрейм
-# встановлюємо колонки
-power.columns = ['Date', 'Time', 'Active', 'Reactive', 'Voltage', 'Intensity', 'met1', 'met2', 'met3']
-# поєднуємо дату та час в одну колонку DateTime
-power['DateTime'] = pd.to_datetime(power['Date'] + power['Time'], format="%d/%m/%Y%H:%M:%S")
+# import download_data
+# download_data.download_dataset()
+def timing_decorator(func):
+    def wrapper(*args, **kwargs):
+        start_time = datetime.now()
+        result = func(*args, **kwargs)
+        end_time = datetime.now()
+        execution_time = end_time - start_time
+        print(f"{func.__name__} took {execution_time} seconds to execute.")
+        return result
+    return wrapper
 
-# Вбираємо колонки Date, Time, індексуємо DateTime
-power.drop(columns = ['Date', 'Time'], inplace=True)
-power.set_index('DateTime', inplace=True)
+def extract_to_df():
+    power = pd.read_csv("./lab4/data/household_power_consumption.txt", delimiter=';') # читаємо датафрейм
+    # встановлюємо колонки
+    power.columns = ['Date', 'Time', 'Active', 'Reactive', 'Voltage', 'Intensity', 'met1', 'met2', 'met3']
+    # поєднуємо дату та час в одну колонку DateTime
+    power['DateTime'] = pd.to_datetime(power['Date'] + power['Time'], format="%d/%m/%Y%H:%M:%S")
 
-# Вбираємо рядки з N/A даними
-power.dropna(inplace=True)
+    # Вбираємо колонки Date, Time, індексуємо DateTime
+    power.drop(columns = ['Date', 'Time'], inplace=True)
+    power.set_index('DateTime', inplace=True)
 
-# Встановлюємо усім даним тип float32 для уніфікації взаємодії
-for column in power.columns:
-    power[column] = power[column].astype('float32')
-start = datetime.now()
+    # Вбираємо рядки з N/A даними
+    power.dropna(inplace=True)
+
+    # Встановлюємо усім даним тип float32 для уніфікації взаємодії
+    for column in power.columns:
+        power[column] = power[column].astype('float32')
+    return power
+
+power = extract_to_df()
+
 # Task 1
+@timing_decorator
 def select_power_cons_more_five(df):
     print("Active > 5")
     print(df[df['Active'] > 5])
     return 0
-select_power_cons_more_five(power)
 
 # Task 2
+@timing_decorator
 def select_volt_more_235(df):
     print("Voltage > 235")
     print(df[df['Voltage'] > 235])
     return 0
-select_volt_more_235(power)
 
 # Task 3
+@timing_decorator
 def met2_more_met3_int_19_20(df):
     print("Intensite >= 19 <= 20, met2 > met3")
     subset = df[(df['Intensity'] >= 19) & (df['Intensity'] <= 20)]
     print(subset[subset['met2'] > subset['met3']])
     return 0
-met2_more_met3_int_19_20(power)
 
 # Task 4
+@timing_decorator
 def mean_of_50000(df):
     print("Random 5000, mean in each met1")
     subset = df.sample(50000)
@@ -52,9 +67,9 @@ def mean_of_50000(df):
         mean = subset[i].mean()
         print(f"Mean is {mean} of {i}")
     return 0
-mean_of_50000(power)
 
 # Task 5
+@timing_decorator
 def night_cons_more_6kw(df):
     print("Task5")
 
@@ -97,6 +112,9 @@ def night_cons_more_6kw(df):
     print(third_first_part(met1_subset))
     print(fourth_second_part(met1_subset))
 
+
+select_power_cons_more_five(power)
+select_volt_more_235(power)
+met2_more_met3_int_19_20(power)
+mean_of_50000(power)
 night_cons_more_6kw(power)
-end = datetime.now() - start
-print(end)
