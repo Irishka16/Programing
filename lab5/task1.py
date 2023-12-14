@@ -1,8 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.widgets import Button, Slider, CheckButtons
-import scipy.signal as sc
-
 
 # створюються скелет діаграм
 noise_base = 0
@@ -12,9 +10,9 @@ noise = np.random.normal(0, noise_base, 1000)
 t = np.linspace(0, 1, 1000)
 fig, (ax1) = plt.subplots(1, 1)
 # базова гармоніка
-line, = ax1.plot(t, 5 * np.sin(5 * t + 1), lw=2)
+line, = ax1.plot(t, 5 * np.sin(2*np.pi* 5 * t + 1), lw=2)
 # "зашумлена" гармоніка
-line1, = ax1.plot(t, 5 * np.sin(5 * t + 1), lw=2, visible=False, alpha=0.5)
+line1, = ax1.plot(t, 5 * np.sin(2*np.pi* 5 * t + 1), lw=2, visible=False, alpha=0.5)
 fig.subplots_adjust(left=0.15, bottom=0.3)
 
 
@@ -55,7 +53,7 @@ noise_cov_slider = Slider(
     valmax=30,
     valinit=5,
 )
-# створюємо слайдер для дисперсії фази 
+# створюємо слайдер для фази 
 
 axwn = fig.add_axes([0.25, 0.2, 0.55, 0.03])
 phase_slider = Slider(
@@ -63,7 +61,7 @@ phase_slider = Slider(
     label='Phas',
     valmin=0.1,
     valmax=10,
-    valinit=0.1
+    valinit=1
 )
 
 # створюємо кнопку відображення шуму
@@ -74,7 +72,7 @@ resetax = fig.add_axes([0.9, 0.025, 0.1, 0.04])
 reset_button = Button(resetax, 'Reset', hovercolor='0.975')
 
 # функція гармоніки
-def harmonic_with_noise(amplitude, frequency, phase=1, noise_mean=0, show_noise=True,noise_cov=1.05, ):
+def harmonic_with_noise(amplitude, frequency, phase=5, noise_mean=0, show_noise=True,noise_cov=1.05, ):
     if show_noise:
         line.set_ydata(amplitude * np.sin(2*np.pi*frequency * t + phase))
         line1.set_ydata(amplitude * np.sin(2*np.pi*frequency * t + phase) + noise_mean)
@@ -112,6 +110,8 @@ def reset(event):
     fr_slider.reset()
     amp_slider.reset()
     noise_mean_slider.reset()
+    noise_cov_slider.reset()
+    phase_slider.reset()
     if noise_toggle_button.get_status()[0]:
         noise_toggle_button.set_active(0)
 

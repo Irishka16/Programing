@@ -5,7 +5,7 @@ from datetime import datetime
 
 # import download_data
 # download_data.download_dataset()
-def timing_decorator(func):
+def timing_decorator(func):   #функція обгортка
     def wrapper(*args, **kwargs):
         start_time = datetime.now()
         result = func(*args, **kwargs)
