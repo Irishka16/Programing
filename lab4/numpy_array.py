@@ -5,7 +5,7 @@ from numpy.lib import recfunctions as rfn
 # import download_data
 # download_data.download_dataset()
 
-def timing_decorator(func):
+def timing_decorator(func): 
     def wrapper(*args, **kwargs):
         start_time = datetime.now()
         result = func(*args, **kwargs)

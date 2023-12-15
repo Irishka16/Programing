@@ -40,7 +40,7 @@ axamp1 = fig.add_axes([0.25, 0.15, 0.55, 0.03])
 noise_mean_slider = Slider(
     ax=axamp1,
     label="Noise",
-    valmin=0,
+    valmin=-2,
     valmax=2,
     valinit=0,
 )
@@ -65,9 +65,10 @@ phase_slider = Slider(
 )
 
 # створюємо кнопку відображення шуму
-ax_noise_toggle = fig.add_axes([0.8, 0.15, 0.1, 0.04])
+ax_noise_toggle = fig.add_axes([0.85, 0.15, 0.1, 0.04])
 noise_toggle_button = CheckButtons(ax=ax_noise_toggle, labels=['Show noise'], actives=[False])
 
+# створюємо кнопку скидання налаштування
 resetax = fig.add_axes([0.9, 0.025, 0.1, 0.04])
 reset_button = Button(resetax, 'Reset', hovercolor='0.975')
 
